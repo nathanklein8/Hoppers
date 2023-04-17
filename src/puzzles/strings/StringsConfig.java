@@ -4,11 +4,10 @@ import puzzles.common.solver.Configuration;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 public class StringsConfig implements Configuration {
 
-    private String current;
+    private final String current;
     private static String goal;
 
     /**
@@ -32,15 +31,29 @@ public class StringsConfig implements Configuration {
 
     @Override
     public Collection<Configuration> getNeighbors() {
-        StringBuilder left = new StringBuilder(current);
-        StringBuilder right = new StringBuilder(current);
-        int index = 0;
-        while (current.charAt(index) == goal.charAt(index)) { index += 1; }
-        int leftInt = (current.charAt(index)-1 < 65) ? 90 : current.charAt(index)-1;
-        int rightInt = (current.charAt(index)+1 > 90) ? 65 : current.charAt(index)+1;
-        left.setCharAt(index, (char) leftInt);
-        right.setCharAt(index, (char) rightInt);
-        return new ArrayList<>(List.of(new StringsConfig(left.toString()), new StringsConfig(right.toString())));
+        ArrayList<Configuration> neighbors = new ArrayList<>();
+        for (int i = 0; i < current.length(); i++) {
+            char cChar = current.charAt(i); //current
+            char nChar = current.charAt(i); //new
+            if (nChar == 'Z') {
+                nChar = 'A';
+            } else {
+                nChar += 1;
+            }
+            StringsConfig plus = new StringsConfig(current.substring(0, i) + nChar +
+                    current.substring(i + 1));
+            neighbors.add(plus);
+
+            if (cChar == 'A') {
+                cChar = 'Z';
+            } else {
+                cChar -= 1;
+            }
+            StringsConfig minus = new StringsConfig(current.substring(0, i) + cChar +
+                    current.substring(i + 1));
+            neighbors.add(minus);
+        }
+        return neighbors;
     }
 
     @Override
