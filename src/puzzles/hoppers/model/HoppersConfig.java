@@ -45,11 +45,8 @@ public class HoppersConfig implements Configuration{
     @Override
     public boolean isSolution() {
         for (int r=0; r<rows; r++) { // for each row
-            char[] row = grid[r];
             for (int c=0; c<cols; c++) { // for each column in the row
-                if (row[c] == 'G') {
-                    return false;
-                }
+                if (grid[r][c] == 'G') { return false; }
             }
         }
         return true;
@@ -59,9 +56,8 @@ public class HoppersConfig implements Configuration{
     public Collection<Configuration> getNeighbors() {
         ArrayList<Configuration> neighbors = new ArrayList<>();
         for (int r=0; r<rows; r++) { // for each row
-            char[] row = grid[r];
             for (int c=0; c<cols; c++) { // for each column in the row
-                if (row[c] == 'G' || row[c] == 'R') {
+                if (grid[r][c] == 'G' || grid[r][c] == 'R') {
                     neighbors.addAll(getMoves(r,c));
                 }
             }
@@ -78,19 +74,17 @@ public class HoppersConfig implements Configuration{
                 result.append(row[c]);
                 result.append(' ');
             }
-            result.append(System.lineSeparator());
+            if (r<rows-1) { result.append(System.lineSeparator()); }
         }
         return result.toString();
     }
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        HoppersConfig that = (HoppersConfig) o;
-
-        return Arrays.deepEquals(grid, that.grid);
+        if (o instanceof HoppersConfig c) {
+            return Arrays.deepEquals(this.grid, c.grid);
+        }
+        return false;
     }
 
     @Override
@@ -110,16 +104,16 @@ public class HoppersConfig implements Configuration{
         char W = '*';
         if (c > 1) {
             if (c > 3) {
-                W = grid[r][c-4];
-                char mid = grid[r][c-2];
-                if (W == '.' && (mid == 'G' || mid == 'R')) {
+                W = grid[r][c-4]; // square to jump to
+                char mid = grid[r][c-2]; // square you're jumping over
+                if (W == '.' && mid == 'G') {
                     moves.add(new HoppersConfig(this, r, c, r, c-4));
                 }
             }
             if (r > 1) {
                 NW = grid[r-2][c-2];
                 char NWMID = grid[r-1][c-1];
-                if (NW == '.' && (NWMID == 'G' || NWMID == 'R')) {
+                if (NW == '.' && NWMID == 'G') {
                     moves.add(new HoppersConfig(this, r, c, r-2, c-2));
                 }
             }
@@ -128,14 +122,14 @@ public class HoppersConfig implements Configuration{
             if (r > 3) {
                 N = grid[r-4][c];
                 char mid = grid[r-2][c];
-                if (N == '.' && (mid == 'G' || mid == 'R')) {
+                if (N == '.' && mid == 'G') {
                     moves.add(new HoppersConfig(this, r, c, r-4, c));
                 }
             }
             if (c < cols-2) {
                 NE = grid[r-2][c+2];
                 char NEMID = grid[r-1][c+1];
-                if (NE == '.' && (NEMID == 'G' || NEMID == 'R')) {
+                if (NE == '.' && NEMID == 'G') {
                     moves.add(new HoppersConfig(this, r, c, r-2, c+2));
                 }
             }
@@ -144,14 +138,14 @@ public class HoppersConfig implements Configuration{
             if (c < cols-4) {
                 E = grid[r][c+4];
                 char mid = grid[r][c+2];
-                if (E == '.' && (mid == 'G' || mid == 'R')) {
+                if (E == '.' && mid == 'G') {
                     moves.add(new HoppersConfig(this, r, c, r, c+4));
                 }
             }
             if (r < rows-2) {
                 SE = grid[r+2][c+2];
                 char SEMID = grid[r+1][c+1];
-                if (SE == '.' && (SEMID == 'G' || SEMID == 'R')) {
+                if (SE == '.' && SEMID == 'G') {
                     moves.add(new HoppersConfig(this, r, c, r+2, c+2));
                 }
             }
@@ -160,14 +154,14 @@ public class HoppersConfig implements Configuration{
             if (r < rows-4) {
                 S = grid[r+4][c];
                 char mid = grid[r+2][c];
-                if (S == '.' && (mid == 'G' || mid == 'R')) {
+                if (S == '.' && mid == 'G') {
                     moves.add(new HoppersConfig(this, r, c, r+4, c));
                 }
             }
             if (c > 1) {
                 SW = grid[r+2][c-2];
                 char SWMID = grid[r+1][c-1];
-                if (SW == '.' && (SWMID == 'G' || SWMID == 'R')) {
+                if (SW == '.' && SWMID == 'G') {
                     moves.add(new HoppersConfig(this, r, c, r+2, c-2));
                 }
             }
