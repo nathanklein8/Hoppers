@@ -1,5 +1,6 @@
 package puzzles.chess.model;
 
+import puzzles.chess.solver.Chess;
 import puzzles.common.solver.Configuration;
 import puzzles.strings.StringsConfig;
 
@@ -10,16 +11,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-// TODO: implement your ChessConfig for the common solver
 
 /**
- * description TBD
+ * Creates a Chess board with given pieces in their grid based off of given file, and creates all possible neighbors
+ * for given board when asked.
  *
  * @author Madeline Mariano mam5090
  */
 public class ChessConfig implements Configuration {
+    /** number of rows on the board*/
     private static int row;
+    /** number of columns on the board*/
     private static int col;
+    /** 2D array grid representing the chess board game*/
     private final char[][] game;
 
 
@@ -71,53 +75,332 @@ public class ChessConfig implements Configuration {
         return pieces == 1;
     }
 
+    /**
+     * Helper function for pawn movements
+     * @param row current row where pawn is located
+     * @param col current col where pawn is located
+     * @return Collection of ChessConfigs of all possible valid pawn moves
+     */
     public Collection<Configuration> pawnMoves(int row, int col){
         ArrayList<Configuration> result = new ArrayList<>();
+        ChessConfig newC = new ChessConfig(this);
         if(row == 0){
             return result;
         }
 
         if(col == 0){
             if(game[row+1][col+1] != '.'){
-                ChessConfig newC = new ChessConfig(this);
                 newC.game[row+1][col+1] = 'P';
                 result.add(newC);
             }
         }
-        else if(col == ChessConfig.col){
+        else if(col == ChessConfig.col-1){
             if(game[row+1][col-1] != '.'){
-                ChessConfig newC = new ChessConfig(this);
-                newC.game[row+1][col+1] = 'P';
+                newC.game[row+1][col-1] = 'P';
                 result.add(newC);
             }
         }
         else{
-            ChessConfig newC = new ChessConfig(this);
             if(game[row+1][col+1] != '.'){
                 newC.game[row+1][col+1] = 'P';
                 result.add(newC);
             }
+            ChessConfig newCh = new ChessConfig(this);
             if(game[row+1][col-1] != '.'){
-                newC.game[row+1][col-1] = 'P';
+                newCh.game[row+1][col-1] = 'P';
+                result.add(newCh);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Helper function for king movements
+     * @param row current row where king is located
+     * @param col current col where king is located
+     * @return Collection of ChessConfigs of all possible valid king moves
+     */
+    public Collection<Configuration> kingMoves(int row, int col) {
+        ArrayList<Configuration> result = new ArrayList<>();
+        if (row == 0) {
+            if (game[row + 1][col] != '.') { // down one
+                ChessConfig newCh = new ChessConfig(this);
+                newCh.game[row + 1][col] = 'K';
+                result.add(newCh);
+            }
+            if (col != ChessConfig.col - 1) {
+                if (game[row][col + 1] != '.') { //to the right one
+                    ChessConfig newC = new ChessConfig(this);
+                    newC.game[row][col + 1] = 'K';
+                    result.add(newC);
+                }
+                if (game[row + 1][col + 1] != '.') { // diag down right
+                    ChessConfig newCh = new ChessConfig(this);
+                    newCh.game[row + 1][col + 1] = 'K';
+                    result.add(newCh);
+                }
+            }
+            if (col != 0) {
+                if (game[row][col - 1] != '.') { // left one
+                    ChessConfig newCh = new ChessConfig(this);
+                    newCh.game[row][col - 1] = 'K';
+                    result.add(newCh);
+                }
+                if (game[row + 1][col - 1] != '.') { // diag down left
+                    ChessConfig newCh = new ChessConfig(this);
+                    newCh.game[row][col - 1] = 'K';
+                    result.add(newCh);
+                }
+            }
+        }
+        else if (row == ChessConfig.row - 1) {
+            if (game[row - 1][col] != '.') { //up one
+                ChessConfig newCh = new ChessConfig(this);
+                newCh.game[row - 1][col] = 'K';
+                result.add(newCh);
+            }
+            if (col != ChessConfig.col - 1) {
+                if (game[row][col + 1] != '.') { //to the right one
+                    ChessConfig newC = new ChessConfig(this);
+                    newC.game[row][col + 1] = 'K';
+                    result.add(newC);
+                }
+                if (game[row - 1][col + 1] != '.') { // diag up right
+                    ChessConfig newCh = new ChessConfig(this);
+                    newCh.game[row - 1][col + 1] = 'K';
+                    result.add(newCh);
+                }
+            }
+            if (col != 0) {
+                if (game[row][col - 1] != '.') { // left one
+                    ChessConfig newCh = new ChessConfig(this);
+                    newCh.game[row][col - 1] = 'K';
+                    result.add(newCh);
+                }
+                if (game[row - 1][col - 1] != '.') { // diag up left
+                    ChessConfig newCh = new ChessConfig(this);
+                    newCh.game[row - 1][col - 1] = 'K';
+                    result.add(newCh);
+                }
+            }
+        }
+        else {
+                if (game[row - 1][col] != '.') { //up one
+                    ChessConfig newCh = new ChessConfig(this);
+                    newCh.game[row - 1][col] = 'K';
+                    result.add(newCh);
+                }
+                if (game[row][col + 1] != '.') { //to the right one
+                    ChessConfig newC = new ChessConfig(this);
+                    newC.game[row][col + 1] = 'K';
+                    result.add(newC);
+                }
+                if (game[row + 1][col] != '.') { // down one
+                    ChessConfig newCh = new ChessConfig(this);
+                    newCh.game[row + 1][col] = 'K';
+                    result.add(newCh);
+                }
+                if (game[row][col - 1] != '.') { // left one
+                    ChessConfig newCh = new ChessConfig(this);
+                    newCh.game[row][col - 1] = 'K';
+                    result.add(newCh);
+                }
+                if (game[row - 1][col - 1] != '.') { // diag up left
+                    ChessConfig newCh = new ChessConfig(this);
+                    newCh.game[row - 1][col - 1] = 'K';
+                    result.add(newCh);
+                }
+                if (game[row - 1][col + 1] != '.') { // diag up right
+                    ChessConfig newCh = new ChessConfig(this);
+                    newCh.game[row - 1][col + 1] = 'K';
+                    result.add(newCh);
+                }
+                if (game[row + 1][col - 1] != '.') { // diag down left
+                    ChessConfig newCh = new ChessConfig(this);
+                    newCh.game[row][col - 1] = 'K';
+                    result.add(newCh);
+                }
+                if (game[row + 1][col + 1] != '.') { // diag down right
+                    ChessConfig newCh = new ChessConfig(this);
+                    newCh.game[row + 1][col + 1] = 'K';
+                    result.add(newCh);
+                }
+            }
+            return result;
+    }
+
+    /**
+     * Helper function for bishop movements
+     * @param row current row where bishop is located
+     * @param col current col where bishop is located
+     * @param queen boolean, true if being used as helper function for queen and places 'Q' not 'B'
+     * @return Collection of ChessConfigs of all possible valid bishop moves
+     */
+    public Collection<Configuration> bishopMoves(int row, int col, boolean queen){
+        ArrayList<Configuration> result = new ArrayList<>();
+        if(row != ChessConfig.row-1){
+            int r = row;
+            int c = col;
+            while(r+1 < ChessConfig.row && c+1 <ChessConfig.col && game[r][c] == '.'){ //diag down right
+                r++;
+                c++;
+            }
+            if(game[r][c] != '.'){
+                ChessConfig newC = new ChessConfig(this);
+                newC.game[r][c] = 'B';
+                if(queen){
+                    newC.game[r][c] = 'Q';
+                }
+                result.add(newC);
+            }
+
+            r = row;
+            c = col;
+            while(r+1 < ChessConfig.row && c-1 > 0 && game[r][c] == '.'){ //diag down left
+                r++;
+                c--;
+            }
+            if(game[r][c] != '.'){
+                ChessConfig newC = new ChessConfig(this);
+                newC.game[r][c] = 'B';
+                if(queen){
+                    newC.game[r][c] = 'Q';
+                }
+                result.add(newC);
+            }
+        }
+        if(row != 0){
+            int r = row;
+            int c = col;
+            while(r-1 >0 && c+1 <ChessConfig.col && game[r][c] == '.'){ //diag up right
+                r--;
+                c++;
+            }
+            if(game[r][c] != '.'){
+                ChessConfig newC = new ChessConfig(this);
+                newC.game[r][c] = 'B';
+                if(queen){
+                    newC.game[r][c] = 'Q';
+                }
+                result.add(newC);
+            }
+
+            r = row;
+            c = col;
+            while(r-1 >0 && c-1 > 0  && game[r][c] == '.'){ //diag up left
+                r--;
+                c--;
+            }
+            if(game[r][c] != '.'){
+                ChessConfig newC = new ChessConfig(this);
+                newC.game[r][c] = 'B';
+                if(queen){
+                    newC.game[r][c] = 'Q';
+                }
                 result.add(newC);
             }
         }
         return result;
     }
 
-//    public Collection<Configuration> knightMoves(int row, int col){
-//    }
-//
-//    public Collection<Configuration> rookMoves(int row, int col){
-//    }
-//
-//    public Collection<Configuration> bishopMoves(int row, int col){
-//    }
-//
-//    public Collection<Configuration> kingMoves(int row, int col){
-//    }
-//    public Collection<Configuration> queenMoves(int row, int col){
-//    }
+    /**
+     * Helper function for rook movements
+     * @param row current row where rook is located
+     * @param col current col where rook is located
+     * @param queen boolean, true if being used as helper function for queen and places 'Q' not 'R'
+     * @return Collection of ChessConfigs of all possible valid rook moves
+     */
+    public Collection<Configuration> rookMoves(int row, int col, boolean queen){
+        ArrayList<Configuration> result = new ArrayList<>();
+        int r = row;
+        int c = col;
+        if(row != ChessConfig.row-1  && game[r][c] == '.'){ // down
+            while(r+1 < ChessConfig.row){
+                r++;
+            }
+            if(game[r][c] != '.'){
+                ChessConfig newC = new ChessConfig(this);
+                newC.game[r][c] = 'R';
+                if(queen){
+                    newC.game[r][c] = 'Q';
+                }
+                result.add(newC);
+            }
+        }
+
+        if(row != 0) { //up
+            r = row;
+            while (r - 1 < ChessConfig.row && game[r][c] == '.') {
+                r--;
+            }
+            if (game[r][c] != '.') {
+                ChessConfig newC = new ChessConfig(this);
+                newC.game[r][c] = 'R';
+                if(queen){
+                    newC.game[r][c] = 'Q';
+                }
+                result.add(newC);
+            }
+        }
+
+        if(col != ChessConfig.col-1){ //right
+            r= row;
+            while(c+1 <ChessConfig.col && game[r][c] == '.'){
+                c++;
+            }
+            if(game[r][c] != '.'){
+                ChessConfig newC = new ChessConfig(this);
+                newC.game[r][c] = 'R';
+                if(queen){
+                    newC.game[r][c] = 'Q';
+                }
+                result.add(newC);
+            }
+        }
+        if(col != 0){ //left
+            c= col;
+            while(c-1 > 0 && game[r][c] == '.'){
+                c--;
+            }
+            if(game[r][c] != '.'){
+                ChessConfig newC = new ChessConfig(this);
+                newC.game[r][c] = 'R';
+                if(queen){
+                    newC.game[r][c] = 'Q';
+                }
+                result.add(newC);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Helper function for Queen movements
+     * @param row current row where queen is located
+     * @param col current col where queen is located
+     * @return Collection of ChessConfigs of all possible valid queen moves
+     */
+    public Collection<Configuration> queenMoves(int row, int col){
+        ArrayList<Configuration> result = new ArrayList<>();
+        result.addAll(bishopMoves(row,col, true));
+        result.addAll(rookMoves(row,col, true));
+
+        return result;
+    }
+
+    /**
+     * Helper function for Knight movements
+     * @param row current row where knight is located
+     * @param col current col where knight is located
+     * @return Collection of ChessConfigs of all possible valid knight moves
+     */
+    public Collection<Configuration> knightMoves(int row, int col){
+        ArrayList<Configuration> result = new ArrayList<>();
+        ChessConfig newC = new ChessConfig(this);
+        //TODO
+
+        return result;
+    }
 
     /**
      * Gets the Neighbors of the current configuration
@@ -126,26 +409,35 @@ public class ChessConfig implements Configuration {
     @Override
     public Collection<Configuration> getNeighbors() {
         ArrayList<Configuration> result = new ArrayList<>();
-//        for(int r = 0; r< row; r++){
-//            for(int c = 0; c<col; c++){
-//                if(game[r][c] == 'B'){
-//                }
-//                else if(game[r][c] == 'K'){
-//                }
-//                else if(game[r][c] == 'N'){
-//                }
-//                else if(game[r][c] == 'P'){
-//                    result.addAll(pawnMoves(r,c));
-//                }
-//                else if(game[r][c] == 'Q'){
-//                }
-//                else if(game[r][c] == 'R'){
-//                }
-//            }
-//        }
+        for(int r = 0; r< row; r++){
+            for(int c = 0; c<col; c++){
+                if(game[r][c] == 'B'){
+                    result.addAll(bishopMoves(r,c, false));
+                }
+                else if(game[r][c] == 'K'){
+                    result.addAll(kingMoves(r,c));
+                }
+                else if(game[r][c] == 'N'){
+                    result.addAll(knightMoves(r,c));
+                }
+                else if(game[r][c] == 'P'){
+                    result.addAll(pawnMoves(r,c));
+                }
+                else if(game[r][c] == 'Q'){
+                    result.addAll(queenMoves(r,c));
+                }
+                else if(game[r][c] == 'R'){
+                    result.addAll(rookMoves(r,c, false));
+                }
+            }
+        }
         return result;
     }
 
+    /**
+     * Creates and returns a string representation of the chess board
+     * @return String of chess board
+     */
     @Override
     public String toString() {
         StringBuilder result = new StringBuilder();
@@ -159,6 +451,11 @@ public class ChessConfig implements Configuration {
         return result.toString();
     }
 
+    /**
+     * Compares given chess board to the current chess board
+     * @param other other board being compared to
+     * @return true if the same false if not
+     */
     @Override
     public boolean equals(Object other) {
         if (other instanceof ChessConfig ch) {
@@ -167,6 +464,10 @@ public class ChessConfig implements Configuration {
         return false;
     }
 
+    /**
+     * Creates hash code of current given board
+     * @return Integer hash code
+     */
     @Override
     public int hashCode() {
         return toString().hashCode();
