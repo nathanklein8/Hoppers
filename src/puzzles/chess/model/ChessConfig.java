@@ -1,14 +1,11 @@
 package puzzles.chess.model;
 
-import puzzles.chess.solver.Chess;
 import puzzles.common.solver.Configuration;
-import puzzles.strings.StringsConfig;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 
 
@@ -72,25 +69,29 @@ public class ChessConfig implements Configuration {
         }
 
         if(col == 0){
-            if(game[row+1][col+1] != '.'){
-                newC.game[row+1][col+1] = 'P';
+            if(game[row-1][col+1] != '.'){
+                newC.game[row-1][col+1] = 'P';
+                newC.game[row][col] = '.';
                 result.add(newC);
             }
         }
         else if(col == ChessConfig.col-1){
-            if(game[row+1][col-1] != '.'){
-                newC.game[row+1][col-1] = 'P';
+            if(game[row-1][col-1] != '.'){
+                newC.game[row-1][col-1] = 'P';
+                newC.game[row][col] = '.';
                 result.add(newC);
             }
         }
         else{
-            if(game[row+1][col+1] != '.'){
-                newC.game[row+1][col+1] = 'P';
+            if(game[row-1][col+1] != '.'){
+                newC.game[row-1][col+1] = 'P';
+                newC.game[row][col] = '.';
                 result.add(newC);
             }
             ChessConfig newCh = new ChessConfig(this);
-            if(game[row+1][col-1] != '.'){
-                newCh.game[row+1][col-1] = 'P';
+            if(game[row-1][col-1] != '.'){
+                newCh.game[row-1][col-1] = 'P';
+                newC.game[row][col] = '.';
                 result.add(newCh);
             }
         }
@@ -109,17 +110,20 @@ public class ChessConfig implements Configuration {
             if (game[row + 1][col] != '.') { // down one
                 ChessConfig newCh = new ChessConfig(this);
                 newCh.game[row + 1][col] = 'K';
+                newCh.game[row][col] = '.';
                 result.add(newCh);
             }
             if (col != ChessConfig.col - 1) {
                 if (game[row][col + 1] != '.') { //to the right one
                     ChessConfig newC = new ChessConfig(this);
                     newC.game[row][col + 1] = 'K';
+                    newC.game[row][col] = '.';
                     result.add(newC);
                 }
                 if (game[row + 1][col + 1] != '.') { // diag down right
                     ChessConfig newCh = new ChessConfig(this);
                     newCh.game[row + 1][col + 1] = 'K';
+                    newCh.game[row][col] = '.';
                     result.add(newCh);
                 }
             }
@@ -127,11 +131,13 @@ public class ChessConfig implements Configuration {
                 if (game[row][col - 1] != '.') { // left one
                     ChessConfig newCh = new ChessConfig(this);
                     newCh.game[row][col - 1] = 'K';
+                    newCh.game[row][col] = '.';
                     result.add(newCh);
                 }
                 if (game[row + 1][col - 1] != '.') { // diag down left
                     ChessConfig newCh = new ChessConfig(this);
-                    newCh.game[row][col - 1] = 'K';
+                    newCh.game[row+1][col - 1] = 'K';
+                    newCh.game[row][col] = '.';
                     result.add(newCh);
                 }
             }
@@ -140,17 +146,20 @@ public class ChessConfig implements Configuration {
             if (game[row - 1][col] != '.') { //up one
                 ChessConfig newCh = new ChessConfig(this);
                 newCh.game[row - 1][col] = 'K';
+                newCh.game[row][col] = '.';
                 result.add(newCh);
             }
             if (col != ChessConfig.col - 1) {
                 if (game[row][col + 1] != '.') { //to the right one
                     ChessConfig newC = new ChessConfig(this);
                     newC.game[row][col + 1] = 'K';
+                    newC.game[row][col] = '.';
                     result.add(newC);
                 }
                 if (game[row - 1][col + 1] != '.') { // diag up right
                     ChessConfig newCh = new ChessConfig(this);
                     newCh.game[row - 1][col + 1] = 'K';
+                    newCh.game[row][col] = '.';
                     result.add(newCh);
                 }
             }
@@ -158,58 +167,74 @@ public class ChessConfig implements Configuration {
                 if (game[row][col - 1] != '.') { // left one
                     ChessConfig newCh = new ChessConfig(this);
                     newCh.game[row][col - 1] = 'K';
+                    newCh.game[row][col] = '.';
                     result.add(newCh);
                 }
                 if (game[row - 1][col - 1] != '.') { // diag up left
                     ChessConfig newCh = new ChessConfig(this);
                     newCh.game[row - 1][col - 1] = 'K';
+                    newCh.game[row][col] = '.';
                     result.add(newCh);
                 }
+
             }
         }
         else {
                 if (game[row - 1][col] != '.') { //up one
                     ChessConfig newCh = new ChessConfig(this);
                     newCh.game[row - 1][col] = 'K';
+                    newCh.game[row][col] = '.';
                     result.add(newCh);
                 }
-                if (game[row][col + 1] != '.') { //to the right one
-                    ChessConfig newC = new ChessConfig(this);
-                    newC.game[row][col + 1] = 'K';
-                    result.add(newC);
-                }
+
                 if (game[row + 1][col] != '.') { // down one
                     ChessConfig newCh = new ChessConfig(this);
                     newCh.game[row + 1][col] = 'K';
+                    newCh.game[row][col] = '.';
                     result.add(newCh);
                 }
-                if (game[row][col - 1] != '.') { // left one
-                    ChessConfig newCh = new ChessConfig(this);
-                    newCh.game[row][col - 1] = 'K';
-                    result.add(newCh);
-                }
-                if (game[row - 1][col - 1] != '.') { // diag up left
-                    ChessConfig newCh = new ChessConfig(this);
-                    newCh.game[row - 1][col - 1] = 'K';
-                    result.add(newCh);
+            if (col != ChessConfig.col - 1) {
+                if (game[row][col + 1] != '.') { //to the right one
+                    ChessConfig newC = new ChessConfig(this);
+                    newC.game[row][col + 1] = 'K';
+                    newC.game[row][col] = '.';
+                    result.add(newC);
                 }
                 if (game[row - 1][col + 1] != '.') { // diag up right
                     ChessConfig newCh = new ChessConfig(this);
                     newCh.game[row - 1][col + 1] = 'K';
-                    result.add(newCh);
-                }
-                if (game[row + 1][col - 1] != '.') { // diag down left
-                    ChessConfig newCh = new ChessConfig(this);
-                    newCh.game[row][col - 1] = 'K';
+                    newCh.game[row][col] = '.';
                     result.add(newCh);
                 }
                 if (game[row + 1][col + 1] != '.') { // diag down right
                     ChessConfig newCh = new ChessConfig(this);
                     newCh.game[row + 1][col + 1] = 'K';
+                    newCh.game[row][col] = '.';
                     result.add(newCh);
                 }
             }
-            return result;
+            if (col != 0) {
+                if (game[row][col - 1] != '.') { // left one
+                    ChessConfig newCh = new ChessConfig(this);
+                    newCh.game[row][col - 1] = 'K';
+                    newCh.game[row][col] = '.';
+                    result.add(newCh);
+                }
+                if (game[row - 1][col - 1] != '.') { // diag up left
+                    ChessConfig newCh = new ChessConfig(this);
+                    newCh.game[row - 1][col - 1] = 'K';
+                    newCh.game[row][col] = '.';
+                    result.add(newCh);
+                }
+                if (game[row + 1][col - 1] != '.') { // diag down left
+                    ChessConfig newCh = new ChessConfig(this);
+                    newCh.game[row+1][col - 1] = 'K';
+                    newCh.game[row][col] = '.';
+                    result.add(newCh);
+                }
+            }
+        }
+        return result;
     }
 
     /**
@@ -221,66 +246,78 @@ public class ChessConfig implements Configuration {
      */
     public Collection<Configuration> bishopMoves(int row, int col, boolean queen){
         ArrayList<Configuration> result = new ArrayList<>();
-        if(row != ChessConfig.row-1){
-            int r = row;
-            int c = col;
-            while(r+1 < ChessConfig.row && c+1 <ChessConfig.col && game[r][c] == '.'){ //diag down right
-                r++;
-                c++;
-            }
-            if(game[r][c] != '.'){
-                ChessConfig newC = new ChessConfig(this);
-                newC.game[r][c] = 'B';
-                if(queen){
-                    newC.game[r][c] = 'Q';
+        if(row != ChessConfig.row-1) {
+            int r = row + 1;
+            int c = col + 1;
+            if (c < ChessConfig.col) {
+                while (r + 1 < ChessConfig.row && c + 1 < ChessConfig.col && game[r][c] == '.') { //diag down right
+                    r++;
+                    c++;
                 }
-                result.add(newC);
+                if (game[r][c] != '.') {
+                    ChessConfig newC = new ChessConfig(this);
+                    newC.game[r][c] = 'B';
+                    newC.game[row][col] = '.';
+                    if (queen) {
+                        newC.game[r][c] = 'Q';
+                    }
+                    result.add(newC);
+                }
             }
 
-            r = row;
-            c = col;
-            while(r+1 < ChessConfig.row && c-1 >= 0 && game[r][c] == '.'){ //diag down left
-                r++;
-                c--;
-            }
-            if(game[r][c] != '.'){
-                ChessConfig newC = new ChessConfig(this);
-                newC.game[r][c] = 'B';
-                if(queen){
-                    newC.game[r][c] = 'Q';
+            r = row + 1;
+            c = col - 1;
+            if (c >= 0) {
+                while (r + 1 < ChessConfig.row && c - 1 >= 0 && game[r][c] == '.') { //diag down left
+                    r++;
+                    c--;
                 }
-                result.add(newC);
+                if (game[r][c] != '.') {
+                    ChessConfig newC = new ChessConfig(this);
+                    newC.game[r][c] = 'B';
+                    newC.game[row][col] = '.';
+                    if (queen) {
+                        newC.game[r][c] = 'Q';
+                    }
+                    result.add(newC);
+                }
             }
         }
-        if(row != 0){
-            int r = row;
-            int c = col;
-            while(r-1 >=0 && c+1 <ChessConfig.col && game[r][c] == '.'){ //diag up right
-                r--;
-                c++;
-            }
-            if(game[r][c] != '.'){
-                ChessConfig newC = new ChessConfig(this);
-                newC.game[r][c] = 'B';
-                if(queen){
-                    newC.game[r][c] = 'Q';
+        if(row != 0) {
+            int r = row - 1;
+            int c = col + 1;
+            if (c < ChessConfig.col) {
+                while (r - 1 >= 0 && c + 1 < ChessConfig.col && game[r][c] == '.') { //diag up right
+                    r--;
+                    c++;
                 }
-                result.add(newC);
+                if (game[r][c] != '.') {
+                    ChessConfig newC = new ChessConfig(this);
+                    newC.game[r][c] = 'B';
+                    newC.game[row][col] = '.';
+                    if (queen) {
+                        newC.game[r][c] = 'Q';
+                    }
+                    result.add(newC);
+                }
             }
 
-            r = row;
-            c = col;
-            while(r-1 >=0 && c-1 >= 0  && game[r][c] == '.'){ //diag up left
-                r--;
-                c--;
-            }
-            if(game[r][c] != '.'){
-                ChessConfig newC = new ChessConfig(this);
-                newC.game[r][c] = 'B';
-                if(queen){
-                    newC.game[r][c] = 'Q';
+            r = row - 1;
+            c = col - 1;
+            if (c >= 0) {
+                while (r - 1 >= 0 && c - 1 >= 0 && game[r][c] == '.') { //diag up left
+                    r--;
+                    c--;
                 }
-                result.add(newC);
+                if (game[r][c] != '.') {
+                    ChessConfig newC = new ChessConfig(this);
+                    newC.game[r][c] = 'B';
+                    newC.game[row][col] = '.';
+                    if (queen) {
+                        newC.game[r][c] = 'Q';
+                    }
+                    result.add(newC);
+                }
             }
         }
         return result;
@@ -295,15 +332,16 @@ public class ChessConfig implements Configuration {
      */
     public Collection<Configuration> rookMoves(int row, int col, boolean queen){
         ArrayList<Configuration> result = new ArrayList<>();
-        int r = row;
+        int r = row+1;
         int c = col;
-        if(row != ChessConfig.row-1  && game[r][c] == '.'){ // down
-            while(r+1 < ChessConfig.row){
+        if(row != ChessConfig.row-1){ // down
+            while(r+1 < ChessConfig.row && game[r][c] == '.'){
                 r++;
             }
             if(game[r][c] != '.'){
                 ChessConfig newC = new ChessConfig(this);
                 newC.game[r][c] = 'R';
+                newC.game[row][col] = '.';
                 if(queen){
                     newC.game[r][c] = 'Q';
                 }
@@ -311,13 +349,14 @@ public class ChessConfig implements Configuration {
             }
         }
         if(row != 0) { //up
-            r = row;
-            while (r - 1 < ChessConfig.row && game[r][c] == '.') {
+            r = row-1;
+            while (r - 1 >= 0 && game[r][c] == '.' ) {
                 r--;
             }
             if (game[r][c] != '.') {
                 ChessConfig newC = new ChessConfig(this);
                 newC.game[r][c] = 'R';
+                newC.game[row][col] = '.';
                 if(queen){
                     newC.game[r][c] = 'Q';
                 }
@@ -327,12 +366,14 @@ public class ChessConfig implements Configuration {
 
         if(col != ChessConfig.col-1){ //right
             r= row;
+            c = col+1;
             while(c+1 <ChessConfig.col && game[r][c] == '.'){
                 c++;
             }
             if(game[r][c] != '.'){
                 ChessConfig newC = new ChessConfig(this);
                 newC.game[r][c] = 'R';
+                newC.game[row][col] = '.';
                 if(queen){
                     newC.game[r][c] = 'Q';
                 }
@@ -340,13 +381,14 @@ public class ChessConfig implements Configuration {
             }
         }
         if(col != 0){ //left
-            c= col;
+            c= col-1;
             while(c-1 >= 0 && game[r][c] == '.'){
                 c--;
             }
             if(game[r][c] != '.'){
                 ChessConfig newC = new ChessConfig(this);
                 newC.game[r][c] = 'R';
+                newC.game[row][col] = '.';
                 if(queen){
                     newC.game[r][c] = 'Q';
                 }
@@ -378,51 +420,65 @@ public class ChessConfig implements Configuration {
     public Collection<Configuration> knightMoves(int row, int col){
         ArrayList<Configuration> result = new ArrayList<>();
 
-        if(row+2<ChessConfig.row){ //2 down
-            if(col-1 >=0 && game[row+2][col-1] != '.'){ //2down, 1left
+        if(row+2<ChessConfig.row && col - 1 >= 0) { //2 down 1left
+            if ( game[row + 2][col - 1] != '.') {
                 ChessConfig newC = new ChessConfig(this);
-                newC.game[row+2][col-1] = 'N';
+                newC.game[row + 2][col - 1] = 'N';
+                newC.game[row][col] = '.';
                 result.add(newC);
             }
-            if(col+1 <ChessConfig.col && game[row+2][col-1] != '.'){ //2down, 1right
+        }
+        if(row+2<ChessConfig.row && col+1 <ChessConfig.col) { //2 down 1right
+            if( game[row+2][col+1] != '.'){
                 ChessConfig newC = new ChessConfig(this);
                 newC.game[row+2][col+1] = 'N';
+                newC.game[row][col] = '.';
                 result.add(newC);
             }
         }
-        if(row-2 >=0){ //2 up
-            if(col-1 >=0 && game[row-2][col-1] != '.'){ //2up, 1left
+        if(row-2 >=0 && col - 1 >= 0) { //2up, 1left
+            if ( game[row - 2][col - 1] != '.') {
                 ChessConfig newC = new ChessConfig(this);
-                newC.game[row-2][col-1] = 'N';
+                newC.game[row - 2][col - 1] = 'N';
+                newC.game[row][col] = '.';
                 result.add(newC);
             }
-            if(col+1 <ChessConfig.col && game[row+2][col-1] != '.'){ //2up, 1right
+        }
+        if(row-2 >=0 && col+1 <ChessConfig.col ){ //2up, 1right
+            if(game[row-2][col+1] != '.'){
                 ChessConfig newC = new ChessConfig(this);
                 newC.game[row-2][col+1] = 'N';
+                newC.game[row][col] = '.';
                 result.add(newC);
             }
         }
-        if(col-2 >=0){ //2 left
-            if(row-1 >=0 && game[row-1][col-2] != '.'){ //2left, 1up
+        if(col-2 >=0 && row - 1 >= 0 ) {//2left, 1up
+            if (game[row - 1][col - 2] != '.') {
                 ChessConfig newC = new ChessConfig(this);
-                newC.game[row-1][col-2] = 'N';
+                newC.game[row - 1][col - 2] = 'N';
+                newC.game[row][col] = '.';
                 result.add(newC);
             }
-            if(row+1 <ChessConfig.row && game[row+1][col-2] != '.'){ //2left, 1down
+        }
+        if(col-2 >=0 && row+1 <ChessConfig.row ){ //2left, 1down
+            if(game[row+1][col-2] != '.'){
                 ChessConfig newC = new ChessConfig(this);
                 newC.game[row+1][col-2] = 'N';
+                newC.game[row][col] = '.';
                 result.add(newC);
             }
         }
-        if(col+2 > ChessConfig.col){ //2 right
-            if(row-1 >=0 && game[row-1][col+2] != '.'){ //2right, 1up
+        if(col+2 < ChessConfig.col){ //2right, 1up
+            if(row-1 >=0 && game[row-1][col+2] != '.'){
                 ChessConfig newC = new ChessConfig(this);
                 newC.game[row-1][col+2] = 'N';
+                newC.game[row][col] = '.';
                 result.add(newC);
             }
             if(row+1 <ChessConfig.row && game[row+1][col+2] != '.'){ //2right, 1down
                 ChessConfig newC = new ChessConfig(this);
                 newC.game[row+1][col+2] = 'N';
+                newC.game[row][col] = '.';
                 result.add(newC);
             }
         }
@@ -503,9 +559,15 @@ public class ChessConfig implements Configuration {
     @Override
     public boolean equals(Object other) {
         if (other instanceof ChessConfig ch) {
-            return this.game == ch.game;
+            for(int r = 0; r< row; r++){
+                for(int c = 0; c<col; c++){
+                    if(game[r][c] != ch.game[r][c]){
+                        return false;
+                    }
+                }
+            }
         }
-        return false;
+        return true;
     }
 
     /**

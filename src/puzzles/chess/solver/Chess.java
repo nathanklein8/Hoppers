@@ -21,11 +21,11 @@ public class Chess {
                 System.out.println(start);
                 LinkedList<Configuration> path = solver.solve(start);
                 System.out.println("Total configs: " + solver.getNumConfigs());
-                System.out.println("Unique configs: " + solver.getUniqueConfigs());
+                System.out.println("Unique configs: " + solver.getUniqueConfigs() + "\n");
                 if (path.size() > 0) {
                     for (int i=0; i<path.size(); i++) {
                         System.out.println("Step: " + i);
-                        System.out.println(path.get(i).toString() + "\n");
+                        System.out.print(path.get(i).toString() + "\n");
                     }
                 } else {
                     System.out.println("No Solution");
