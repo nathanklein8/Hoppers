@@ -1,6 +1,8 @@
 package puzzles.chess.model;
 
 import puzzles.common.Observer;
+import puzzles.common.solver.Configuration;
+import puzzles.common.solver.Solver;
 
 import java.io.IOException;
 import java.util.LinkedList;
@@ -34,5 +36,13 @@ public class ChessModel {
 
     public ChessModel(String filename) throws IOException {
         //TODO
+        Solver solver = new Solver();
+        try {
+            Configuration initial = new ChessConfig(filename);
+            System.out.println(initial);
+            LinkedList<Configuration> path = solver.solve(initial);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
