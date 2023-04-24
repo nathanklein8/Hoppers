@@ -17,10 +17,9 @@ public class Chess {
             System.out.println("File: " + file);
             Solver solver = new Solver();
             try {
-                long start = System.currentTimeMillis();
-                Configuration initial = new ChessConfig(file);
-                System.out.println(initial);
-                LinkedList<Configuration> path = solver.solve(initial);
+                Configuration start = new ChessConfig(file);
+                System.out.println(start);
+                LinkedList<Configuration> path = solver.solve(start);
                 System.out.println("Total configs: " + solver.getNumConfigs());
                 System.out.println("Unique configs: " + solver.getUniqueConfigs());
                 if (path.size() > 0) {

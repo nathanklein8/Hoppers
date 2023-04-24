@@ -59,23 +59,6 @@ public class ChessConfig implements Configuration {
     }
 
     /**
-     * Checks whether current Config is a solution (only one piece is remaining)
-     * @return True if solution, false if not
-     */
-    @Override
-    public boolean isSolution() {
-        int pieces = 0;
-        for(int r = 0; r< row; r++){
-            for(int c = 0; c<col; c++){
-                if(game[r][c] != '.'){
-                    pieces++;
-                }
-            }
-        }
-        return pieces == 1;
-    }
-
-    /**
      * Helper function for pawn movements
      * @param row current row where pawn is located
      * @param col current col where pawn is located
@@ -256,7 +239,7 @@ public class ChessConfig implements Configuration {
 
             r = row;
             c = col;
-            while(r+1 < ChessConfig.row && c-1 > 0 && game[r][c] == '.'){ //diag down left
+            while(r+1 < ChessConfig.row && c-1 >= 0 && game[r][c] == '.'){ //diag down left
                 r++;
                 c--;
             }
@@ -272,7 +255,7 @@ public class ChessConfig implements Configuration {
         if(row != 0){
             int r = row;
             int c = col;
-            while(r-1 >0 && c+1 <ChessConfig.col && game[r][c] == '.'){ //diag up right
+            while(r-1 >=0 && c+1 <ChessConfig.col && game[r][c] == '.'){ //diag up right
                 r--;
                 c++;
             }
@@ -287,7 +270,7 @@ public class ChessConfig implements Configuration {
 
             r = row;
             c = col;
-            while(r-1 >0 && c-1 > 0  && game[r][c] == '.'){ //diag up left
+            while(r-1 >=0 && c-1 >= 0  && game[r][c] == '.'){ //diag up left
                 r--;
                 c--;
             }
@@ -327,7 +310,6 @@ public class ChessConfig implements Configuration {
                 result.add(newC);
             }
         }
-
         if(row != 0) { //up
             r = row;
             while (r - 1 < ChessConfig.row && game[r][c] == '.') {
@@ -359,7 +341,7 @@ public class ChessConfig implements Configuration {
         }
         if(col != 0){ //left
             c= col;
-            while(c-1 > 0 && game[r][c] == '.'){
+            while(c-1 >= 0 && game[r][c] == '.'){
                 c--;
             }
             if(game[r][c] != '.'){
@@ -384,7 +366,6 @@ public class ChessConfig implements Configuration {
         ArrayList<Configuration> result = new ArrayList<>();
         result.addAll(bishopMoves(row,col, true));
         result.addAll(rookMoves(row,col, true));
-
         return result;
     }
 
@@ -396,9 +377,55 @@ public class ChessConfig implements Configuration {
      */
     public Collection<Configuration> knightMoves(int row, int col){
         ArrayList<Configuration> result = new ArrayList<>();
-        ChessConfig newC = new ChessConfig(this);
-        //TODO
 
+        if(row+2<ChessConfig.row){ //2 down
+            if(col-1 >=0 && game[row+2][col-1] != '.'){ //2down, 1left
+                ChessConfig newC = new ChessConfig(this);
+                newC.game[row+2][col-1] = 'N';
+                result.add(newC);
+            }
+            if(col+1 <ChessConfig.col && game[row+2][col-1] != '.'){ //2down, 1right
+                ChessConfig newC = new ChessConfig(this);
+                newC.game[row+2][col+1] = 'N';
+                result.add(newC);
+            }
+        }
+        if(row-2 >=0){ //2 up
+            if(col-1 >=0 && game[row-2][col-1] != '.'){ //2up, 1left
+                ChessConfig newC = new ChessConfig(this);
+                newC.game[row-2][col-1] = 'N';
+                result.add(newC);
+            }
+            if(col+1 <ChessConfig.col && game[row+2][col-1] != '.'){ //2up, 1right
+                ChessConfig newC = new ChessConfig(this);
+                newC.game[row-2][col+1] = 'N';
+                result.add(newC);
+            }
+        }
+        if(col-2 >=0){ //2 left
+            if(row-1 >=0 && game[row-1][col-2] != '.'){ //2left, 1up
+                ChessConfig newC = new ChessConfig(this);
+                newC.game[row-1][col-2] = 'N';
+                result.add(newC);
+            }
+            if(row+1 <ChessConfig.row && game[row+1][col-2] != '.'){ //2left, 1down
+                ChessConfig newC = new ChessConfig(this);
+                newC.game[row+1][col-2] = 'N';
+                result.add(newC);
+            }
+        }
+        if(col+2 > ChessConfig.col){ //2 right
+            if(row-1 >=0 && game[row-1][col+2] != '.'){ //2right, 1up
+                ChessConfig newC = new ChessConfig(this);
+                newC.game[row-1][col+2] = 'N';
+                result.add(newC);
+            }
+            if(row+1 <ChessConfig.row && game[row+1][col+2] != '.'){ //2right, 1down
+                ChessConfig newC = new ChessConfig(this);
+                newC.game[row+1][col+2] = 'N';
+                result.add(newC);
+            }
+        }
         return result;
     }
 
@@ -432,6 +459,23 @@ public class ChessConfig implements Configuration {
             }
         }
         return result;
+    }
+
+    /**
+     * Checks whether current Config is a solution (only one piece is remaining)
+     * @return True if solution, false if not
+     */
+    @Override
+    public boolean isSolution() {
+        int pieces = 0;
+        for(int r = 0; r< row; r++){
+            for(int c = 0; c<col; c++){
+                if(game[r][c] != '.'){
+                    pieces++;
+                }
+            }
+        }
+        return pieces == 1;
     }
 
     /**
