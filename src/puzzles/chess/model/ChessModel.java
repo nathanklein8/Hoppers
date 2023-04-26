@@ -14,6 +14,7 @@ public class ChessModel {
 
     /** the current configuration */
     private ChessConfig currentConfig;
+    private ChessConfig origConfig;
 
     /**
      * The view calls this to add itself as an observer.
@@ -38,11 +39,39 @@ public class ChessModel {
         //TODO
         Solver solver = new Solver();
         try {
-            Configuration initial = new ChessConfig(filename);
-            System.out.println(initial);
-            LinkedList<Configuration> path = solver.solve(initial);
+            this.currentConfig = new ChessConfig(filename);
+            this.origConfig = currentConfig;
+            alertObservers("Loaded: " +filename);
+            LinkedList<Configuration> path = solver.solve(currentConfig);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public String getDisplay(){
+        return currentConfig.getDisplay();
+    }
+
+    public void loadNew(String filename) throws IOException{
+        try {
+            this.currentConfig = new ChessConfig(filename);
+            this.origConfig = currentConfig;
+            alertObservers("Loaded: " +filename);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void selectCell(int r, int c){
+        alertObservers("Selected (" +r + ", " + c + ")");
+    }
+
+//    public void capture(){
+//
+//    }
+
+    public void reset(){
+        this.currentConfig = origConfig;
+        alertObservers("Puzzle reset!");
     }
 }

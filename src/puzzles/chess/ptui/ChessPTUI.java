@@ -4,10 +4,17 @@ import puzzles.common.Observer;
 import puzzles.chess.model.ChessModel;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Scanner;
-
+/**
+ * A Plain-Text user interface for the Solitare Chess game
+ *
+ * @author Madeline Mariano mam5090
+ */
 public class ChessPTUI implements Observer<ChessModel, String> {
     private ChessModel model;
+    private PrintWriter out;
+
 
     public void init(String filename) throws IOException {
         this.model = new ChessModel(filename);
@@ -15,11 +22,15 @@ public class ChessPTUI implements Observer<ChessModel, String> {
         displayHelp();
     }
 
+
     @Override
     public void update(ChessModel model, String data) {
         // for demonstration purposes
         System.out.println(data);
-        System.out.println(model);
+        System.out.println(model.getDisplay());
+
+
+
     }
 
     private void displayHelp() {
@@ -30,7 +41,7 @@ public class ChessPTUI implements Observer<ChessModel, String> {
         System.out.println( "r(eset)             -- reset the current game" );
     }
 
-    public void run() {
+    public void run() throws IOException {
         Scanner in = new Scanner( System.in );
         for ( ; ; ) {
             System.out.print( "> " );
@@ -39,6 +50,25 @@ public class ChessPTUI implements Observer<ChessModel, String> {
             if (words.length > 0) {
                 if (words[0].startsWith( "q" )) {
                     break;
+                }
+                else if(words[0].startsWith( "h" )){
+                    displayHelp();
+                }
+                else if(words[0].startsWith( "l" )){
+                   if(words.length > 1){
+                       model.loadNew(words[1]);
+                   }
+                   else{
+                       System.out.println("file not found!");
+                   }
+                }
+                else if(words[0].startsWith( "r" )){
+                        model.reset();
+                }
+                else if(words[0].startsWith( "s" )){
+                    if(words.length ==3){
+                        model.selectCell(Integer.parseInt(words[1]), Integer.parseInt(words[2]));
+                    }
                 }
                 else {
                     displayHelp();
