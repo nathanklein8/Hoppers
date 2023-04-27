@@ -4,7 +4,6 @@ import puzzles.common.Observer;
 import puzzles.chess.model.ChessModel;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Scanner;
 /**
  * A Plain-Text user interface for the Solitare Chess game
@@ -13,12 +12,13 @@ import java.util.Scanner;
  */
 public class ChessPTUI implements Observer<ChessModel, String> {
     private ChessModel model;
-    private PrintWriter out;
 
 
     public void init(String filename) throws IOException {
         this.model = new ChessModel(filename);
         this.model.addObserver(this);
+        System.out.println("Loaded: " + filename);
+        System.out.println(model.getDisplay());
         displayHelp();
     }
 
@@ -27,7 +27,7 @@ public class ChessPTUI implements Observer<ChessModel, String> {
     public void update(ChessModel model, String data) {
         // for demonstration purposes
         System.out.println(data);
-        System.out.println(model.getDisplay());
+        System.out.print(model.getDisplay());
 
 
 
@@ -52,25 +52,25 @@ public class ChessPTUI implements Observer<ChessModel, String> {
                     break;
                 }
                 else if(words[0].startsWith( "h" )){
-                    displayHelp();
-                }
-                else if(words[0].startsWith( "l" )){
+                    model.hint();
+                } else if(words[0].startsWith( "l" )){
                    if(words.length > 1){
                        model.loadNew(words[1]);
                    }
                    else{
-                       System.out.println("file not found!");
+                       System.out.println("No file included, invalid command.");
+                       displayHelp();
                    }
-                }
-                else if(words[0].startsWith( "r" )){
+                } else if(words[0].startsWith( "r" )){
                         model.reset();
-                }
-                else if(words[0].startsWith( "s" )){
+                } else if(words[0].startsWith( "s" )){
                     if(words.length ==3){
                         model.selectCell(Integer.parseInt(words[1]), Integer.parseInt(words[2]));
+                    } else{
+                        System.out.println("Invalid command, coordinates missing");
+                        displayHelp();
                     }
-                }
-                else {
+                } else {
                     displayHelp();
                 }
             }

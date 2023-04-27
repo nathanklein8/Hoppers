@@ -19,11 +19,11 @@ public class ChessConfig implements Configuration {
     /**
      * number of rows on the board
      */
-    private static int row;
+    protected static int row;
     /**
      * number of columns on the board
      */
-    private static int col;
+    protected static int col;
     /**
      * 2D array grid representing the chess board game
      */
@@ -70,8 +70,8 @@ public class ChessConfig implements Configuration {
      * @param col current col where pawn is located
      * @return Collection of ChessConfigs of all possible valid pawn moves
      */
-    public Collection<Configuration> pawnMoves(int row, int col) {
-        ArrayList<Configuration> result = new ArrayList<>();
+    public Collection<ChessConfig> pawnMoves(int row, int col) {
+        ArrayList<ChessConfig> result = new ArrayList<>();
         ChessConfig newC = new ChessConfig(this);
         if (row == 0) {
             return result;
@@ -112,8 +112,8 @@ public class ChessConfig implements Configuration {
      * @param col current col where king is located
      * @return Collection of ChessConfigs of all possible valid king moves
      */
-    public Collection<Configuration> kingMoves(int row, int col) {
-        ArrayList<Configuration> result = new ArrayList<>();
+    public Collection<ChessConfig> kingMoves(int row, int col) {
+        ArrayList<ChessConfig> result = new ArrayList<>();
         if (row == 0) {
             if (game[row + 1][col] != '.') { // down one
                 ChessConfig newCh = new ChessConfig(this);
@@ -251,8 +251,8 @@ public class ChessConfig implements Configuration {
      * @param queen boolean, true if being used as helper function for queen and places 'Q' not 'B'
      * @return Collection of ChessConfigs of all possible valid bishop moves
      */
-    public Collection<Configuration> bishopMoves(int row, int col, boolean queen) {
-        ArrayList<Configuration> result = new ArrayList<>();
+    public Collection<ChessConfig> bishopMoves(int row, int col, boolean queen) {
+        ArrayList<ChessConfig> result = new ArrayList<>();
         if (row != ChessConfig.row - 1) {
             int r = row + 1;
             int c = col + 1;
@@ -338,8 +338,8 @@ public class ChessConfig implements Configuration {
      * @param queen boolean, true if being used as helper function for queen and places 'Q' not 'R'
      * @return Collection of ChessConfigs of all possible valid rook moves
      */
-    public Collection<Configuration> rookMoves(int row, int col, boolean queen) {
-        ArrayList<Configuration> result = new ArrayList<>();
+    public Collection<ChessConfig> rookMoves(int row, int col, boolean queen) {
+        ArrayList<ChessConfig> result = new ArrayList<>();
         int r = row + 1;
         int c = col;
         if (row != ChessConfig.row - 1) { // down
@@ -413,8 +413,8 @@ public class ChessConfig implements Configuration {
      * @param col current col where queen is located
      * @return Collection of ChessConfigs of all possible valid queen moves
      */
-    public Collection<Configuration> queenMoves(int row, int col) {
-        ArrayList<Configuration> result = new ArrayList<>();
+    public Collection<ChessConfig> queenMoves(int row, int col) {
+        ArrayList<ChessConfig> result = new ArrayList<>();
         result.addAll(bishopMoves(row, col, true));
         result.addAll(rookMoves(row, col, true));
         return result;
@@ -427,8 +427,8 @@ public class ChessConfig implements Configuration {
      * @param col current col where knight is located
      * @return Collection of ChessConfigs of all possible valid knight moves
      */
-    public Collection<Configuration> knightMoves(int row, int col) {
-        ArrayList<Configuration> result = new ArrayList<>();
+    public Collection<ChessConfig> knightMoves(int row, int col) {
+        ArrayList<ChessConfig> result = new ArrayList<>();
 
         if (row + 2 < ChessConfig.row && col - 1 >= 0) { //2 down 1left
             if (game[row + 2][col - 1] != '.') {
@@ -523,6 +523,51 @@ public class ChessConfig implements Configuration {
         return result;
     }
 
+
+    public char getCell(int r, int c){
+        return game[r][c];
+    }
+    public ChessConfig isValidCapture(int startR, int startC, int endR, int endC, char piece){
+        if(piece == 'P'){
+            for(ChessConfig c: pawnMoves(startR, startC)){
+                if(c.game[startR][startC] == '.' && c.game[endR][endC] == 'P'){
+                    return c;
+                }
+            }
+        } else if(piece == 'K'){
+            for(ChessConfig c: kingMoves(startR, startC)){
+                if(c.game[startR][startC] == '.' && c.game[endR][endC] == 'K'){
+                    return c;
+                }
+            }
+        } else if(piece == 'N'){
+            for(ChessConfig c: knightMoves(startR, startC)){
+                if(c.game[startR][startC] == '.' && c.game[endR][endC] == 'N'){
+                    return c;
+                }
+            }
+        } else if(piece == 'B'){
+            for(ChessConfig c: bishopMoves(startR, startC, false)){
+                if(c.game[startR][startC] == '.' && c.game[endR][endC] == 'B'){
+                    return c;
+                }
+            }
+        } else if(piece == 'R'){
+            for(ChessConfig c: rookMoves(startR, startC, false)){
+                if(c.game[startR][startC] == '.' && c.game[endR][endC] == 'R'){
+                    return c;
+                }
+            }
+        } else if(piece == 'Q'){
+            for(ChessConfig c: queenMoves(startR, startC)){
+                if(c.game[startR][startC] == '.' && c.game[endR][endC] == 'Q'){
+                    return c;
+                }
+            }
+        }
+
+        return null;
+    }
     /**
      * Checks whether current Config is a solution (only one piece is remaining)
      *
