@@ -1,13 +1,19 @@
 package puzzles.common.solver;
-
 import java.util.*;
 
+/**
+ * Generic solver class to solve puzzles of different various configs
+ *
+ * @author Nathan Klein
+ */
 public class Solver {
-
+    /** Hashmap of Configs to build the predecessor map*/
     HashMap<Configuration, Configuration> predecessorMap;
+    /** LinkedList of configs that represents the queue*/
     LinkedList<Configuration> queue;
-
+    /** the number of total configs created*/
     private int numConfigs = 1;
+    /** the number of unique configs generated*/
     private int uniqueConfigs;
 
     /**
@@ -28,6 +34,9 @@ public class Solver {
         return uniqueConfigs;
     }
 
+    /**
+     * Constructs a new solver with a new hashmap and linkedlist
+     */
     public Solver() {
         this.predecessorMap = new HashMap<>();
         this.queue = new LinkedList<>();

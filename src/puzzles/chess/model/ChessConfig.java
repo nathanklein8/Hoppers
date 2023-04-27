@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 
-
 /**
  * Creates a Chess board with given pieces in their grid based off of given file, and creates all possible neighbors
  * for given board when asked.
@@ -16,17 +15,11 @@ import java.util.Collection;
  * @author Madeline Mariano mam5090
  */
 public class ChessConfig implements Configuration {
-    /**
-     * number of rows on the board
-     */
+    /** number of rows on the board */
     protected static int row;
-    /**
-     * number of columns on the board
-     */
+    /** number of columns on the board */
     protected static int col;
-    /**
-     * 2D array grid representing the chess board game
-     */
+    /** 2D array grid representing the chess board game */
     private final char[][] game;
 
 
@@ -523,10 +516,25 @@ public class ChessConfig implements Configuration {
         return result;
     }
 
-
+    /**
+     * gets the contents of the cell at the located coordinates
+     * @param r integer given row
+     * @param c integer given column
+     * @return character in the given cell
+     */
     public char getCell(int r, int c){
         return game[r][c];
     }
+
+    /**
+     * checks if the desired movement is valid or not, and returns the board if it is
+     * @param startR starting row
+     * @param startC starting column
+     * @param endR ending row
+     * @param endC ending column
+     * @param piece character representation of piece being moved
+     * @return ChessConfig of desired movement, or null if invalid capture
+     */
     public ChessConfig isValidCapture(int startR, int startC, int endR, int endC, char piece){
         if(piece == 'P'){
             for(ChessConfig c: pawnMoves(startR, startC)){
