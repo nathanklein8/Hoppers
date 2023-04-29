@@ -90,6 +90,10 @@ public class HoppersModel {
             alertObservers("de-selected... Choose a new froggy to move");
             return;
         }
+        if (row<0||col<0) {
+            alertObservers("Invalid Coordinates! >:(");
+            return;
+        }
         // make sure row/col are both odd or even
         if ((row%2!=0 && col%2!=0)||(row%2!=1 && col%2!=1)) {
             if (curRow != -1 && curCol != -1) {  // selecting to coords
