@@ -79,6 +79,32 @@ public class HoppersConfig implements Configuration{
         return result.toString();
     }
 
+    public String getDisplay() {
+        StringBuilder result = new StringBuilder(" ");
+
+        result.append(" ");
+        for (int c=0; c<cols; ++c) {
+            result.append(c).append(" ");
+        }
+
+        result.append(System.lineSeparator()).append("  ");
+        result.append(("-").repeat(Math.max(0, cols  * 2-1)));
+        result.append(System.lineSeparator());
+
+        for (int r=0; r<rows; ++r) {
+            result.append(r).append('|');
+            for (int c = 0; c<cols; ++c) {
+                if (c != cols-1) {
+                    result.append(grid[r][c]).append(" ");
+                } else {
+                    result.append(grid[r][c]).append(System.lineSeparator());
+                }
+            }
+        }
+
+        return result.toString();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o instanceof HoppersConfig c) {
@@ -90,6 +116,18 @@ public class HoppersConfig implements Configuration{
     @Override
     public int hashCode() {
         return Arrays.deepHashCode(grid);
+    }
+
+    public boolean isFrog(int r, int c) {
+        return (grid[r][c] == 'G') || (grid[r][c] == 'R');
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public int getCols() {
+        return cols;
     }
 
     public Collection<Configuration> getMoves(int r, int c) {
