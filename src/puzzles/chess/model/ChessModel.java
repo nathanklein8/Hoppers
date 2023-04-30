@@ -151,7 +151,7 @@ public class ChessModel {
         if(move != null){
             currentConfig = move;
             if(move.isSolution()){
-                alertObservers("Captured from (" + cR + ", " + cC + ") to (" + endR + ", " + endC + "); Game completed, You won!");
+                alertObservers("Game completed, You won!");
             }
             else{
                 alertObservers("Captured from (" + cR + ", " + cC + ") to (" + endR + ", " + endC + ")");
@@ -173,7 +173,7 @@ public class ChessModel {
         if(path.size() != 0){
             currentConfig = (ChessConfig) path.get(1);
             if(currentConfig.isSolution()){
-            alertObservers("Game completed! Quit or load a new game :)");
+            alertObservers("Game won! Quit/reset/load a new game :)");
             }
             else{
                 alertObservers("Next step!");
