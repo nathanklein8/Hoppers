@@ -66,6 +66,32 @@ public class ChessModel {
     }
 
     /**
+     * gets the row dimensions
+     * @return integer row total
+     */
+    public int getRow(){
+        return ChessConfig.row;
+    }
+
+    /**
+     * gets the column dimensions
+     * @return integer column total
+     */
+    public int getCol(){
+        return ChessConfig.col;
+    }
+
+    /**
+     * gets the piece in the desired cell
+     * @param r given row
+     * @param c given col
+     * @return character representation of piece
+     */
+    public char getCell(int r, int c){
+        return currentConfig.getCell(r,c);
+    }
+
+    /**
      * loads a new game from given file
      * @param filename file with new chess info
      */
@@ -74,6 +100,8 @@ public class ChessModel {
             this.currentConfig = new ChessConfig(filename);
             this.origConfig = currentConfig;
             alertObservers("Loaded: " +filename);
+            cR = -1;
+            cC = -1;
         } catch (Exception e) {
             alertObservers("Could not load file: "+filename);
         }
@@ -106,6 +134,8 @@ public class ChessModel {
      */
     public void reset(){
         this.currentConfig = origConfig;
+        cR = -1;
+        cC = -1;
         alertObservers("Puzzle reset!");
     }
 
