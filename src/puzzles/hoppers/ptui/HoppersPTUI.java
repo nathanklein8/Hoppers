@@ -13,6 +13,8 @@ public class HoppersPTUI implements Observer<HoppersModel, String> {
     public void init(String filename) throws IOException {
         this.model = new HoppersModel(filename);
         this.model.addObserver(this);
+        System.out.println("Loaded: " + filename);
+        System.out.println(model.getDisplay());
         displayHelp();
     }
 
@@ -20,7 +22,7 @@ public class HoppersPTUI implements Observer<HoppersModel, String> {
     public void update(HoppersModel model, String data) {
         // for demonstration purposes
         System.out.println(data);
-        System.out.println(model);
+        System.out.println(model.getDisplay());
     }
 
     private void displayHelp() {
@@ -38,8 +40,18 @@ public class HoppersPTUI implements Observer<HoppersModel, String> {
             String line = in.nextLine();
             String[] words = line.split( "\\s+" );
             if (words.length > 0) {
-                if (words[0].startsWith( "q" )) {
+                if (words[0].startsWith("q")) {         // quit command
                     break;
+                } else if (words[0].startsWith("h")) {  // hint command
+                    model.hint();
+                } else if (words[0].startsWith("r")) {  // reset command
+                    model.reset();
+                } else if (words[0].startsWith("s")) {  // select command
+                    int row = Integer.parseInt(words[1]);
+                    int col = Integer.parseInt(words[2]);
+                    model.select(row, col);
+                } else if (words[0].startsWith("l")) {  // load command
+                    model.load(words[1]);
                 }
                 else {
                     displayHelp();
@@ -53,7 +65,7 @@ public class HoppersPTUI implements Observer<HoppersModel, String> {
             System.out.println("Usage: java HoppersPTUI filename");
         } else {
             try {
-                ChessPTUI ptui = new ChessPTUI();
+                HoppersPTUI ptui = new HoppersPTUI();
                 ptui.init(args[0]);
                 ptui.run();
             } catch (IOException ioe) {
