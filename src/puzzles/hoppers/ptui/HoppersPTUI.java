@@ -28,7 +28,7 @@ public class HoppersPTUI implements Observer<HoppersModel, String> {
     private void displayHelp() {
         System.out.println( "h(int)              -- hint next move" );
         System.out.println( "l(oad) filename     -- load new puzzle file" );
-        System.out.println( "s(elect) r c        -- select cell at r, c (use -1,-1 to de-select)" );
+        System.out.println( "s(elect) r c        -- select cell at r, c" );
         System.out.println( "q(uit)              -- quit the game" );
         System.out.println( "r(eset)             -- reset the current game" );
     }

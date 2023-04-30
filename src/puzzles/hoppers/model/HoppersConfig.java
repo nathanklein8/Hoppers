@@ -130,6 +130,10 @@ public class HoppersConfig implements Configuration{
         return cols;
     }
 
+    public char getCell(int row, int column) {
+        return grid[row][column];
+    }
+
     public Collection<Configuration> getMoves(int r, int c) {
         ArrayList<Configuration> moves = new ArrayList<>();
         char NE = '*';
