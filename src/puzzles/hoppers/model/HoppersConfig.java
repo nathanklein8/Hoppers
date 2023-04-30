@@ -9,12 +9,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
+/**
+ * Stores data needed to solve a Hoppers puzzle
+ *
+ * @author Nathan Klein nek7125@rit.edu
+ */
 public class HoppersConfig implements Configuration{
 
     private char[][] grid;
     private static int rows;
     private static int cols;
 
+    /**
+     * creates a new HoppersConfig from a file
+     * @param filename file
+     * @throws IOException fileNotFoundException
+     */
     public HoppersConfig(String filename) throws IOException {
         try (BufferedReader in = new BufferedReader(new FileReader(filename))) {
             String[] dims = in.readLine().split(" ");
@@ -31,6 +41,14 @@ public class HoppersConfig implements Configuration{
         }
     }
 
+    /**
+     * copy Constructor to create a HoppersConfig with a frog moved
+     * @param other HoppersConfig to copy
+     * @param fromRow row to jump from
+     * @param fromCol column to jump from
+     * @param toRow row to jump to
+     * @param toCol column to jump to
+     */
     public HoppersConfig(HoppersConfig other, int fromRow, int fromCol, int toRow, int toCol) {
         this.grid = new char[rows][cols];
         for (int r=0; r<rows; r++) {
@@ -42,6 +60,10 @@ public class HoppersConfig implements Configuration{
         this.grid[toRow][toCol] = frog;                         // to cell
     }
 
+    /**
+     * checks if the HoppersConfig is a valid solution
+     * @return boolean
+     */
     @Override
     public boolean isSolution() {
         for (int r=0; r<rows; r++) { // for each row
@@ -52,6 +74,10 @@ public class HoppersConfig implements Configuration{
         return true;
     }
 
+    /**
+     * Returns a Collection of all possible moves that can be made from this Config
+     * @return Collection<Configuration> all possible moves
+     */
     @Override
     public Collection<Configuration> getNeighbors() {
         ArrayList<Configuration> neighbors = new ArrayList<>();
@@ -79,6 +105,10 @@ public class HoppersConfig implements Configuration{
         return result.toString();
     }
 
+    /**
+     * Displays the Hoppers game board with row and column indicators
+     * @return String
+     */
     public String getDisplay() {
         StringBuilder result = new StringBuilder(" ");
 
@@ -118,22 +148,46 @@ public class HoppersConfig implements Configuration{
         return Arrays.deepHashCode(grid);
     }
 
+    /**
+     * checks if there is a frog present at the given coordinates
+     * @param r row
+     * @param c column
+     * @return boolean
+     */
     public boolean isFrog(int r, int c) {
         return (grid[r][c] == 'G') || (grid[r][c] == 'R');
     }
 
+    /**
+     * returns the number of rows in the hoppers grid
+     * @return int
+     */
     public int getRows() {
         return rows;
     }
 
+    /**
+     * returns the number of columns in the hoppers grid
+     * @return int
+     */
     public int getCols() {
         return cols;
     }
 
+    /**
+     * gets the char value on the hoppers game board at the given coordinates
+     * @param row row
+     * @param column column
+     * @return char
+     */
     public char getCell(int row, int column) {
         return grid[row][column];
     }
 
+    /**
+     * Returns a Collection of all possible moves that can be made
+     * @return Collection<Configuration> all possible moves
+     */
     public Collection<Configuration> getMoves(int r, int c) {
         ArrayList<Configuration> moves = new ArrayList<>();
         char NE = '*';

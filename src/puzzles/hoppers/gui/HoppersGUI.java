@@ -20,6 +20,11 @@ import java.io.File;
 import java.nio.file.Paths;
 import java.util.List;
 
+/**
+ * Class to create a Graphical UI using HoppersConfig and HoppersModel
+ *
+ * @author Nathan Klein nek7125@rit.edu
+ */
 public class HoppersGUI extends Application implements Observer<HoppersModel, String> {
     /** The size of all icons, in square dimension */
     private final static int ICON_SIZE = 75;

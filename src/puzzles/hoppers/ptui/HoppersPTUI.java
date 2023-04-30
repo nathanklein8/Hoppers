@@ -2,11 +2,15 @@ package puzzles.hoppers.ptui;
 
 import puzzles.common.Observer;
 import puzzles.hoppers.model.HoppersModel;
-import puzzles.chess.ptui.ChessPTUI;
 
 import java.io.IOException;
 import java.util.Scanner;
 
+/**
+ * Class to create a Plain Text UI using HoppersConfig and HoppersModel
+ *
+ * @author Nathan Klein nek7125@rit.edu
+ */
 public class HoppersPTUI implements Observer<HoppersModel, String> {
     private HoppersModel model;
 
@@ -25,6 +29,9 @@ public class HoppersPTUI implements Observer<HoppersModel, String> {
         System.out.println(model.getDisplay());
     }
 
+    /**
+     * displays valid commands
+     */
     private void displayHelp() {
         System.out.println( "h(int)              -- hint next move" );
         System.out.println( "l(oad) filename     -- load new puzzle file" );
@@ -33,6 +40,9 @@ public class HoppersPTUI implements Observer<HoppersModel, String> {
         System.out.println( "r(eset)             -- reset the current game" );
     }
 
+    /**
+     * loops while the game is being played
+     */
     public void run() {
         Scanner in = new Scanner( System.in );
         for ( ; ; ) {

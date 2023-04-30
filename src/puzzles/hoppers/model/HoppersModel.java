@@ -8,6 +8,11 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+/**
+ * Stores data needed to solve a Hoppers puzzle with a UI
+ *
+ * @author Nathan Klein nek7125@rit.edu
+ */
 public class HoppersModel {
     /** the collection of observers of this model */
     private final List<Observer<HoppersModel, String>> observers = new LinkedList<>();
@@ -50,6 +55,10 @@ public class HoppersModel {
         }
     }
 
+    /**
+     * attempts to solve the puzzle from the current state, updating the current state to the next step in the solution
+     * if there is one, otherwise, alerts the observers that the puzzle is insolvable.
+     */
     public void hint() {
         if (currentConfig.isSolution()) {
             alertObservers("Already solved!");
@@ -69,6 +78,10 @@ public class HoppersModel {
         }
     }
 
+    /**
+     * loads a new puzzle file, alerts observers
+     * @param filename file to load and read from
+     */
     public void load(String filename) {
         try {
             currentConfig = new HoppersConfig(filename);
@@ -81,6 +94,11 @@ public class HoppersModel {
         }
     }
 
+    /**
+     * selects a frog to move, or an open space to move to
+     * @param row int selected row
+     * @param col int selected column
+     */
     public void select(int row, int col) {
         if (row>=currentConfig.getRows() || col>=currentConfig.getCols() || row<0 || col<0) {
             alertObservers("Selection out of bounds!");
@@ -91,29 +109,20 @@ public class HoppersModel {
             return;
         }
         if (curRow != -1 && curCol != -1) {  // selecting to coords
-            if (row==curRow && col==curCol) {
-                alertObservers("Deselected ("+curRow+", "+curCol+")");
-                curCol = -1;
-                curRow = -1;
-                return;
-            }
             Collection<Configuration> validMoves = currentConfig.getMoves(curRow, curCol);
             HoppersConfig moved = new HoppersConfig(currentConfig, curRow, curCol, row, col);
             if (validMoves.contains(moved)) {
                 this.currentConfig = moved;
+                if (currentConfig.isSolution()) {
+                    alertObservers("woohoo you won");
+                } else {
+                    alertObservers("Jumped from ("+curRow+", "+curCol+") to ("+row+", "+col+")");
+                }
             } else {
                 alertObservers("Invalid move bruh");
-                return;
             }
-            if (currentConfig.isSolution()) {
-                curCol = -1;
-                curRow = -1;
-                alertObservers("woohoo you won");
-            } else {
-                alertObservers("Jumped from ("+curRow+", "+curCol+") to ("+row+", "+col+")");
-                curCol = -1;
-                curRow = -1;
-            }
+            curRow = -1;
+            curCol = -1;
         } else {                // selecting from coords
             if (currentConfig.isFrog(row, col)) {
                 curRow = row;
@@ -126,6 +135,9 @@ public class HoppersModel {
 
     }
 
+    /**
+     * resets the puzzle to the original unsolved state
+     */
     public void reset() {
         currentConfig = originalConfig;
         curRow = -1;
@@ -133,18 +145,36 @@ public class HoppersModel {
         alertObservers("Puzzle reset!");
     }
 
+    /**
+     * Displays the Hoppers game board with row and column indicators
+     * @return String
+     */
     public String getDisplay() {
         return currentConfig.getDisplay();
     }
 
+    /**
+     * returns the number of rows in the Hoppers game board
+     * @return int
+     */
     public int getRows() {
         return currentConfig.getRows();
     }
 
+    /**
+     * returns the number of columns in the Hoppers game board
+     * @return int
+     */
     public int getCols() {
         return currentConfig.getCols();
     }
 
+    /**
+     * gets the value stored in the Hoppers game board at the given coordinates
+     * @param row row
+     * @param column column
+     * @return char
+     */
     public char getCell(int row, int column) {
         return currentConfig.getCell(row, column);
     }
