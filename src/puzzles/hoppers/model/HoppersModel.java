@@ -91,6 +91,12 @@ public class HoppersModel {
             return;
         }
         if (curRow != -1 && curCol != -1) {  // selecting to coords
+            if (row==curRow && col==curCol) {
+                alertObservers("Deselected ("+curRow+", "+curCol+")");
+                curCol = -1;
+                curRow = -1;
+                return;
+            }
             Collection<Configuration> validMoves = currentConfig.getMoves(curRow, curCol);
             HoppersConfig moved = new HoppersConfig(currentConfig, curRow, curCol, row, col);
             if (validMoves.contains(moved)) {
