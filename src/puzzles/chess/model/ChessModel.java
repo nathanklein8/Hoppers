@@ -115,17 +115,21 @@ public class ChessModel {
      * @param c given column
      */
     public void selectCell(int r, int c){
-        if(r < ChessConfig.row && r >=0 && c>= 0 && c < ChessConfig.col && cR == -1 && cC == -1){
-            this.cR = r;
-            this.cC = c;
-            alertObservers("Selected (" +r + ", " + c + ")");
-        } else if(r < ChessConfig.row && r >=0 && c>= 0 && c < ChessConfig.col && cR != -1 && cC != -1 ){
-            capture(r,c);
+        if(currentConfig.isSolution()){
+            alertObservers("Game won! Quit/reset/load a new game :)");
         }
         else {
-            alertObservers("Invalid selection (" +r + ", " + c + ")" );
-            cR = -1;
-            cC = -1;
+            if (r < ChessConfig.row && r >= 0 && c >= 0 && c < ChessConfig.col && cR == -1 && cC == -1) {
+                this.cR = r;
+                this.cC = c;
+                alertObservers("Selected (" + r + ", " + c + ")");
+            } else if (r < ChessConfig.row && r >= 0 && c >= 0 && c < ChessConfig.col && cR != -1 && cC != -1) {
+                capture(r, c);
+            } else {
+                alertObservers("Invalid selection (" + r + ", " + c + ")");
+                cR = -1;
+                cC = -1;
+            }
         }
     }
 
@@ -168,18 +172,22 @@ public class ChessModel {
      * user is told there is no solution. If the given hint completes the game, the user is informed.
      */
     public void hint(){
-        Solver solver = new Solver();
-        LinkedList<Configuration> path = solver.solve(currentConfig);
-        if(path.size() != 0){
-            currentConfig = (ChessConfig) path.get(1);
-            if(currentConfig.isSolution()){
+        if(currentConfig.isSolution()){
             alertObservers("Game won! Quit/reset/load a new game :)");
+        }
+        else {
+            Solver solver = new Solver();
+            LinkedList<Configuration> path = solver.solve(currentConfig);
+            if (path.size() != 0) {
+                currentConfig = (ChessConfig) path.get(1);
+                if (currentConfig.isSolution()) {
+                    alertObservers("Game won! Quit/reset/load a new game :)");
+                } else {
+                    alertObservers("Next step!");
+                }
+            } else {
+                alertObservers("No solution found :(");
             }
-            else{
-                alertObservers("Next step!");
-            }
-        } else{
-            alertObservers("No solution found :(");
         }
     }
 }
