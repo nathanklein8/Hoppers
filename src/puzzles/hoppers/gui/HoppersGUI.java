@@ -51,8 +51,7 @@ public class HoppersGUI extends Application implements Observer<HoppersModel, St
         chooser.setInitialDirectory(new File(currentPath));
         File selectedFile = chooser.showOpenDialog(stage);
         if (selectedFile != null) {
-            pond.getChildren().removeAll();
-            System.out.println("wiped pond");
+            pond.getChildren().clear();
             model.load("data/hoppers/"+selectedFile.getName());
         }
     }
@@ -104,6 +103,7 @@ public class HoppersGUI extends Application implements Observer<HoppersModel, St
 
         Scene scene = new Scene(pane);
         stage.setScene(scene);
+        stage.setTitle("Hoppers");
         stage.show();
 
         model.load(firstFile);
@@ -115,6 +115,9 @@ public class HoppersGUI extends Application implements Observer<HoppersModel, St
             return;
         }
         message.setText(msg);
+        if (pond.getChildren().size()==0) {
+
+        }
         for (int r=0; r<model.getRows(); r++) {
             for (int c=0; c<model.getCols(); c++) {
                 int row = r;
@@ -134,7 +137,6 @@ public class HoppersGUI extends Application implements Observer<HoppersModel, St
             }
         }
         this.stage.sizeToScene();  // when a different sized puzzle is loaded
-        System.out.println("updated");
     }
 
     public static void main(String[] args) {
